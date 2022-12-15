@@ -3,8 +3,11 @@ const Book = require("../model/Book");
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.status(200).render("books.ejs");
+router.get("/", async (req, res) => {
+  const books = await Book.getAll();
+  res.status(200).render("books.ejs", {
+    books
+  });
 });
 
 router.get("/all", async (req, res) => {

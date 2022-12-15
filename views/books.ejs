@@ -148,7 +148,21 @@
             <th>Delete</th>
           </tr>
         </thead>
-        <tbody id="tbodyBooks"></tbody>
+        <tbody id="tbodyBooks">
+          <% for(let book of books) { %> 
+            <tr data-id="<%= book.id %>">
+              <th><%= book.id %></th>
+              <th><%= book.title %></th>
+              <th><%= book.author %></th>
+              <th><%= book.publisherName %></th>
+              <th><%= book.publishingYear %></th>
+              <th><%= book.pages %></th>
+              <th><%= book.count %></th>
+              <th><img src="/images/edit.png" data-bs-toggle="modal" data-bs-target="#exampleModal"></th>
+              <th><img src="/images/delete.png" data-bs-toggle="modal" data-bs-target="#exampleModalDelete"></th>
+            </tr>
+          <% } %> 
+        </tbody>
       </table>
     </div>
   </body>

@@ -105,9 +105,9 @@ const getBooks = async () => {
 
 getBooks().then((data) => {
   booksArray = data;
-  booksArray.forEach((element) => {
-    drawRaw(element);
-  });
+  // booksArray.forEach((element) => {
+  //   drawRaw(element);
+  // });
 });
 
 create_book.addEventListener("click", async (e) => {
