@@ -1,3 +1,4 @@
+
 const new_book = document.querySelector("#newBook");
 const create_book = document.querySelector("#createBook");
 const close_book = document.querySelector("#closeBook");
@@ -24,11 +25,16 @@ const countChange = document.querySelector("#countChange");
 
 const tableBook = document.querySelector("#tableBook");
 
+const getBooks = async () => {
+  const res = await fetch('/books/all');
+  return res.json();
+};
+
 tableBook.addEventListener("click", (event) => {
   chosenTr = event.target.closest("tr");
   thisId = chosenTr.getAttribute("data-id");
 
-  const thisBook = booksArray.find((elem) => elem.id === thisId);
+  const thisBook = booksArray.find((elem) => elem._id === thisId);
 
   titleChange.value = thisBook.title;
   authorChange.value = thisBook.author;
@@ -48,14 +54,14 @@ saveChangesBook.addEventListener("click", async () => {
     count: countChange.value,
   };
 
-  const res = await fetch('/books/edit/' + thisId, {
+  await fetch('/books/edit/' + thisId, {
     method:'PUT',
     body:JSON.stringify(newBook),
     headers: {
       "Content-Type": "application/json",
     }
   })
-  const data = await res.json();
+  const data = await getBooks();
 
   tbody_books.innerHTML = ""
   booksArray = data;
@@ -65,10 +71,10 @@ saveChangesBook.addEventListener("click", async () => {
 });
 
 deleteBook.addEventListener("click", async () => {
-  const res = await fetch('/books/delete/' + thisId, {
+  await fetch('/books/delete/' + thisId, {
     method:'delete'
   })
-  const data = await res.json();
+  const data = await getBooks();
 
   tbody_books.innerHTML = ""
   booksArray = data;
@@ -77,9 +83,9 @@ deleteBook.addEventListener("click", async () => {
   });
 });
 
-const createTr = (tr, data) => {
+const createTr = (data) => {
   return `
-          <th>${data.id}</th>
+          <th>${data._id}</th>
           <th>${data.title}</th>
           <th>${data.author}</th>
           <th>${data.publishingYear}</th>
@@ -93,21 +99,13 @@ const createTr = (tr, data) => {
 
 const drawRaw = (dataElement) => {
   let tr = document.createElement("tr");
-  tr.innerHTML = createTr(tr, dataElement);
-  tr.setAttribute("data-id", dataElement.id);
+  tr.innerHTML = createTr(dataElement);
+  tr.setAttribute("data-id", dataElement._id);
   tbody_books.appendChild(tr);
-};
-
-const getBooks = async () => {
-  const res = await fetch("/books/all");
-  return res.json();
 };
 
 getBooks().then((data) => {
   booksArray = data;
-  // booksArray.forEach((element) => {
-  //   drawRaw(element);
-  // });
 });
 
 create_book.addEventListener("click", async (e) => {
@@ -128,16 +126,16 @@ create_book.addEventListener("click", async (e) => {
       pages: pages,
       count: count,
     };
-    const res = await fetch("/books/create", {
+    await fetch("/books/create", {
       method: "POST",
       body: JSON.stringify(newBook),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    console.log(res);
-    const data = await res.json();
-    console.log('data: ', data);
+
+    const data = await getBooks();
+
     tbody_books.innerHTML = ""
     booksArray = data;
     booksArray.forEach((element) => {

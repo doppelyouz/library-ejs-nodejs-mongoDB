@@ -2,9 +2,12 @@ const express = require("express");
 const mongoose = require('mongoose');
 
 const booksRoutes = require("./routes/book")
+const visitorsRoutes = require("./routes/visitor")
 
 const app = express();
-mongoose.connect('mongodb+srv://doppelyouz:sdGHhSL4Mnb6mZqv@cluster0.tt7avdq.mongodb.net/library?retryWrites=true&w=majority',() => {
+
+mongoose.set("strictQuery", false);
+mongoose.connect('mongodb+srv://doppelyouz:daneka18@cluster0.tt7avdq.mongodb.net/library?retryWrites=true&w=majority',() => {
   console.log('mongo connected');
 }, (err) => {
   console.log(err);
@@ -16,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/books", booksRoutes)
+app.use("/visitors", visitorsRoutes)
 
 app.listen(8080, () => {
   console.log("Server is on 8080");

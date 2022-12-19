@@ -150,8 +150,8 @@
         </thead>
         <tbody id="tbodyBooks">
           <% for(let book of books) { %> 
-            <tr data-id="<%= book.id %>">
-              <th><%= book.id %></th>
+            <tr data-id="<%= book._id %>">
+              <th><%= book._id %></th>
               <th><%= book.title %></th>
               <th><%= book.author %></th>
               <th><%= book.publisherName %></th>
