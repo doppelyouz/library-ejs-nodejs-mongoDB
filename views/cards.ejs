@@ -33,16 +33,28 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="inputsCreateCards">
-                        <div class="modal-input">
-                            <label for="visitor">Visitor: </label>
-                            <input type="text" id="visitor" name="visitor">
+                    <div class="form">
+                        <div class="list_wrapper">
+                            <div class="list_wrapper__title">Book's title</div>
+                            <div class="list" id="books">
+                                <% for(let book of books) { %>
+                                    <div class="list_wrapper__value" data-id="<%= book._id %>">
+                                        <%= book.title %>
+                                    </div>
+                                <% } %>
+                            </div>
                         </div>
-                        <div class="modal-input">
-                            <label for="book">Book: </label>
-                            <input type="text" id="book" name="book">
-                        </div>
-                    </form>
+                        <div class="list_wrapper">
+                            <div class="list_wrapper__title">Visitor's name</div>
+                            <div class="list" id="visitors">
+                                <% for(let visitor of visitors) { %>
+                                    <div class="list_wrapper__value" data-id="<%= visitor._id %>">
+                                        <%= visitor.name %>
+                                    </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="createCard">Создать</button>
@@ -95,7 +107,19 @@
                             <th>Return date</th>
                         </tr> 
                     </thead>
-                    <tbody id="tbodyCards"></tbody>
+                    <tbody id="tbodyCards">
+                        <% for(let order of orders) { %> 
+                            <tr data-id="<%= order._id %>">
+                              <th><%= order._id %></th>
+                              <th><%= order.book.title %></th>
+                              <th><%= order.visitor.name %></th>
+                              <th><%= order.borrowDate %></th>
+                              <!-- <th><%= order.returnDate %></th> -->
+                              <th><img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal"></th>
+
+                            </tr>
+                          <% } %> 
+                    </tbody>
             </table>
         </div>
     </main>

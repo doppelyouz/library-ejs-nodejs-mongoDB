@@ -10,8 +10,19 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Book",
     },
-    borrowDate: { type: Date, default: () => Date.now() },
-    returnDate: { type: Date, default: () => Date.now() },
+    borrowDate: { 
+      type: Date, 
+      default: () => {
+        return Date.now();
+      }
+    },
+    returnDate: { 
+      returned: {
+        type: Boolean,
+        default: false
+      },
+      time: Date
+    },
   },
   {
     timestamps: true,
