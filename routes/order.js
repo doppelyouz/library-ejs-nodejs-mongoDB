@@ -32,13 +32,13 @@ router.post("/create", async (req, res)=>{
     res.status(200).json(order)
 })
 
-router.put('/cards/:id', (req, res) => {
-  const order = Order.findOne(req.params.id);
- 
-  if (!order) return res.status(404).json({});
- 
-  order.returnDate = Date.now();
-  res.status(200).json(order)
+router.put('/edit/:id', async (req, res) => {
+  const id = req.params.id;
+  const orders = await Order.updateOne({
+    _id: id
+  }, req.body);
+
+  res.status(200).json(orders);
  })
 
-module.exports = router
+module.exports = router;

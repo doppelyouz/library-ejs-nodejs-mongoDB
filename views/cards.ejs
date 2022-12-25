@@ -52,8 +52,8 @@
                                         <%= visitor.name %>
                                     </div>
                                     <% } %>
-                                </div>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -111,10 +111,14 @@
                         <% for(let order of orders) { %> 
                             <tr data-id="<%= order._id %>">
                               <th><%= order._id %></th>
-                              <th><%= order.book.title %></th>
-                              <th><%= order.visitor.name %></th>
+                              <th><%= order?.visitor?.name %></th>
+                              <th><%= order?.book?.title %></th>
                               <th><%= order.borrowDate %></th>
-                              <th><%= order.returnDate %></th>
+                              <% if(order.returnDate) { %> 
+                                <th><%= order.returnDate %></th>
+                              <% } else { %> 
+                                <th><img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal"></img></th>
+                              <% } %> 
                             </tr>
                           <% } %> 
                     </tbody>

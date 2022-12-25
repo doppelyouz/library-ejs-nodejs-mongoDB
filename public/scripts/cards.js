@@ -44,6 +44,7 @@ $books.addEventListener("click", (e) => {
 
   currentBook.classList.add("active");
   chosenBook = bookId;
+  console.log(chosenBook);
 });
 
 $visitors.addEventListener("click", (e) => {
@@ -66,6 +67,9 @@ tableCards.addEventListener("click", (event) => {
     thisId = chosenTr.getAttribute("data-id");
     console.log(thisId);
 });
+
+
+
 
 search.addEventListener("click", (e) => {
   e.preventDefault();
@@ -95,13 +99,14 @@ search.addEventListener("click", (e) => {
     btn.remove();
     tbody_cards.innerHTML = "";
     cardsArray.forEach((el) => {
+      let checker = el.returnDate ? data.returnDate : `<img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal"></img>`;
       tbody_cards.innerHTML += `
       <tr>
-        <th>${el.id}</th>
-        <th>${el.visitor}</th>
-        <th>${el.book}</th>
-        <th>${el.borrow}</th>
-        <th>${el.return}</th>
+        <th>${el._id}</th>
+        <th>${el.visitor.name}</th>
+        <th>${el.book.title}</th>
+        <th>${el.borrowDate}</th>
+        <th>${checker}</th>
       </tr>
       `;
     });
@@ -110,54 +115,54 @@ search.addEventListener("click", (e) => {
 });
 
 returnBook.addEventListener("click", async () => {
+  const timeElapsed = Date.now();
+  const today = new Date(timeElapsed);
+  const newOrder = {
+    returnDate: today.toLocaleDateString()
+  };
 
+  await fetch('/cards/edit/' + thisId, {
+    method:'PUT',
+    body:JSON.stringify(newOrder),
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
+  const data = await getOrders();
+
+  tbody_cards.innerHTML = ""
+  cardsArray = data;
+  cardsArray.forEach((element) => {
+    drawRaw(element);
+  });
 });
 
-sort.addEventListener("click", () => {
+sort.addEventListener("click", async () => {
   if (select.value == "id") {
-    tbody_cards.innerHTML = "";
-    cardsArray.forEach((el) => {
-      tbody_cards.innerHTML += `
-      <tr>
-        <th>${el.id}</th>
-        <th>${el.visitor}</th>
-        <th>${el.book}</th>
-        <th>${el.borrow}</th>
-        <th>${el.return}</th>
-      </tr>
-      `;
+    const data = await getOrders();
+    tbody_cards.innerHTML = ""
+    cardsArray = data;
+    cardsArray.forEach((element) => {
+      drawRaw(element);
     });
   } else if (select.value == "borrow") {
-    let cardsSortBorrow = [...cardsArray];
-    tbody_cards.innerHTML = "";
-    cardsSortBorrow.sort((a, b) => (a.now > b.now ? -1 : 1));
-    cardsSortBorrow.forEach((el) => {
-      tbody_cards.innerHTML += `
-  <tr>
-    <th>${el.id}</th>
-    <th>${el.visitor}</th>
-    <th>${el.book}</th>
-    <th>${el.borrow}</th>
-    <th>${el.return}</th>
-  </tr>
-  `;
+    const data = await getOrders();
+    tbody_cards.innerHTML = ""
+    cardsArray = data;
+    cardsArray.reverse().forEach((element) => {
+      drawRaw(element);
     });
   } else if (select.value == "return") {
-    let cardsSortReturn = [...cardsArray];
-    tbody_cards.innerHTML = "";
-    cardsSortReturn.sort((a, b) =>
-      a.returnMilliseconds > b.returnMilliseconds ? 1 : -1
-    );
-    cardsSortReturn.forEach((el) => {
-      tbody_cards.innerHTML += `
-  <tr>
-    <th>${el.id}</th>
-    <th>${el.visitor}</th>
-    <th>${el.book}</th>
-    <th>${el.borrow}</th>
-    <th>${el.return}</th>
-  </tr>
-  `;
+
+
+    const data = await getOrders();
+    tbody_cards.innerHTML = ""
+    cardsArray = data;
+    
+    cardsArray.sort(order => order.returnDate ? 1 : -1);
+    
+    cardsArray.reverse().forEach((element) => {
+      drawRaw(element);
     });
   }
 });
@@ -167,13 +172,13 @@ getOrders().then((data) => {
 });
 
 const createTr = (data) => {
+  let checker = data.returnDate ? data.returnDate : `<img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal"></img>`;
   return `
     <th>${data._id}</th>
     <th>${data.visitor.name}</th>
     <th>${data.book.title}</th>
     <th>${data.borrowDate}</th>
-    <th>${data.returnDate}</th>
-    `;
+    <th>${checker}</th>`;
 };
 
 const drawRaw = (dataElement) => {

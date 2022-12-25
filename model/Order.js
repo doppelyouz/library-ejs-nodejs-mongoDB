@@ -11,14 +11,15 @@ const orderSchema = new Schema(
       ref: "Book",
     },
     borrowDate: { 
-      type: Date, 
+      type: String, 
       default: () => {
-        return Date.now();
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        return today.toLocaleDateString();
       }
     },
     returnDate: {
-      type: String,
-      default: `<img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal">`
+      type: String
     }
   },
   {
