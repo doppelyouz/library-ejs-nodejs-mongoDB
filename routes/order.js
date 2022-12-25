@@ -32,4 +32,13 @@ router.post("/create", async (req, res)=>{
     res.status(200).json(order)
 })
 
+router.put('/cards/:id', (req, res) => {
+  const order = Order.findOne(req.params.id);
+ 
+  if (!order) return res.status(404).json({});
+ 
+  order.returnDate = Date.now();
+  res.status(200).json(order)
+ })
+
 module.exports = router

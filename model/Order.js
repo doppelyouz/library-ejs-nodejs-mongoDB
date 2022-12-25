@@ -16,13 +16,10 @@ const orderSchema = new Schema(
         return Date.now();
       }
     },
-    returnDate: { 
-      returned: {
-        type: Boolean,
-        default: false
-      },
-      time: Date
-    },
+    returnDate: {
+      type: String,
+      default: `<img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal">`
+    }
   },
   {
     timestamps: true,

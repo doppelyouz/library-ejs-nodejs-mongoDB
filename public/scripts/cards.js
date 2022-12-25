@@ -96,20 +96,20 @@ search.addEventListener("click", (e) => {
     tbody_cards.innerHTML = "";
     cardsArray.forEach((el) => {
       tbody_cards.innerHTML += `
-  <tr>
-    <th>${el.id}</th>
-    <th>${el.visitor}</th>
-    <th>${el.book}</th>
-    <th>${el.borrow}</th>
-    <th>${el.return}</th>
-  </tr>
-  `;
+      <tr>
+        <th>${el.id}</th>
+        <th>${el.visitor}</th>
+        <th>${el.book}</th>
+        <th>${el.borrow}</th>
+        <th>${el.return}</th>
+      </tr>
+      `;
     });
     searchInput.value = "";
   });
 });
 
-returnBook.addEventListener("click", () => {
+returnBook.addEventListener("click", async () => {
 
 });
 
@@ -118,14 +118,14 @@ sort.addEventListener("click", () => {
     tbody_cards.innerHTML = "";
     cardsArray.forEach((el) => {
       tbody_cards.innerHTML += `
-  <tr>
-    <th>${el.id}</th>
-    <th>${el.visitor}</th>
-    <th>${el.book}</th>
-    <th>${el.borrow}</th>
-    <th>${el.return}</th>
-  </tr>
-  `;
+      <tr>
+        <th>${el.id}</th>
+        <th>${el.visitor}</th>
+        <th>${el.book}</th>
+        <th>${el.borrow}</th>
+        <th>${el.return}</th>
+      </tr>
+      `;
     });
   } else if (select.value == "borrow") {
     let cardsSortBorrow = [...cardsArray];
@@ -168,12 +168,12 @@ getOrders().then((data) => {
 
 const createTr = (data) => {
   return `
-  <th>${data._id}</th>
-  <th>${data.visitor.name}</th>
-  <th>${data.book.title}</th>
-  <th>${data?.borrowDate}</th>
-  <th><img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal"></th>
-  `;
+    <th>${data._id}</th>
+    <th>${data.visitor.name}</th>
+    <th>${data.book.title}</th>
+    <th>${data.borrowDate}</th>
+    <th>${data.returnDate}</th>
+    `;
 };
 
 const drawRaw = (dataElement) => {
