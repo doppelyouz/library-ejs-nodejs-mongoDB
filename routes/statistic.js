@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const Book = require("../model/Book");
 
 const router = Router();
 

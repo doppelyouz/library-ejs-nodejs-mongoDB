@@ -69,8 +69,6 @@ tableCards.addEventListener("click", (event) => {
 });
 
 
-
-
 search.addEventListener("click", (e) => {
   e.preventDefault();
   let searchInput = document.querySelector("#searchInput");
@@ -94,21 +92,16 @@ search.addEventListener("click", (e) => {
       table.rows[i].style.display = "none";
     }
   }
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
     search.removeAttribute("disabled");
     btn.remove();
-    tbody_cards.innerHTML = "";
-    cardsArray.forEach((el) => {
-      let checker = el.returnDate ? data.returnDate : `<img src="/images/return.png" data-bs-toggle="modal" data-bs-target="#returnCardModal"></img>`;
-      tbody_cards.innerHTML += `
-      <tr>
-        <th>${el._id}</th>
-        <th>${el.visitor.name}</th>
-        <th>${el.book.title}</th>
-        <th>${el.borrowDate}</th>
-        <th>${checker}</th>
-      </tr>
-      `;
+
+    const data = await getOrders();
+
+    tbody_cards.innerHTML = ""
+    cardsArray = data;
+    cardsArray.forEach((element) => {
+      drawRaw(element);
     });
     searchInput.value = "";
   });
@@ -188,8 +181,7 @@ const drawRaw = (dataElement) => {
   tbody_cards.appendChild(tr);
 };
 
-create_card.addEventListener("click", async (e) => {
-  e.preventDefault();
+create_card.addEventListener("click", async () => {
   const newOrder = {
     book: chosenBook,
     visitor: chosenVisitor
@@ -211,10 +203,11 @@ create_card.addEventListener("click", async (e) => {
     drawRaw(element);
   });
 
+  
+  currentVisitor?.classList?.remove("active");
+  currentBook?.classList?.remove("active");
   chosenBook = undefined;
   chosenVisitor = undefined;
   currentBook = undefined;
   currentVisitor = undefined;
-  currentVisitor?.classList?.remove("active");
-  currentBook?.classList?.remove("active");
 });

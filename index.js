@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const booksRoutes = require("./routes/book")
 const visitorsRoutes = require("./routes/visitor")
 const orderRoutes = require("./routes/order")
+const statisticsRoutes = require("./routes/statistic")
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/books", booksRoutes)
 app.use("/visitors", visitorsRoutes)
 app.use("/cards", orderRoutes)
+app.use("/statistics", statisticsRoutes)
 
 app.listen(8080, () => {
   console.log("Server is on 8080");
